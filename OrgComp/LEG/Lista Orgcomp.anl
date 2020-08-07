@@ -1,0 +1,25 @@
+OBS -> Usando as estruturas definidas na aula 10
+
+1:
+[addi	$at, $t1, 104]
+O addi será feito de forma muito semelhante ao o lw, definido no slide. A modificação se dá no Mux que decide qual valor será enviado para o Write Data. No caso do addi, esse mux escolherá a ULA em vez da memória primária.
+
+[lw		$t0, $at]
+Sem modificações, supondo que lw $t0, $at seja equivalente a lw $tw, 0 ($at).
+
+2:
+
+[addi	$destino, $operando1, constante]
+O addi será feito de forma muito semelhante ao o lw, definido no slide. A modificação se dá no Mux que decide qual valor será enviado para o Write Data. No caso do addi, esse mux escolherá
+a ULA em vez da memória primária.
+
+3:
+
+Cria-se um novo barramento Instruction[25-0], que é extendido para 32 bits por meio de duas ações. A primeira é shiftar para a esquerda 2 bits, criando-se dois zeros à direita. A segunda é copiar os 4 bits mais significativos do contador de programa à esquerda desse novo endereço. Esso novo endereço é passado para um novo mux localizado logo antes do contador de programa.
+
+Além disso, cria-se outro mux no Write register ligado ao endereço do registrador $ra (que armazena o endereço de retorno) e um mux que liga o endereço atual do contador de programa ao write data dos registradores.
+
+Ao satisfazer essas condições com o Regwrite=1, o endereço anterior será salvo em $ra enquanto o novo endereço será enviado para o contador de programa como um endereço de 32 bits apropriado.
+
+4:
+

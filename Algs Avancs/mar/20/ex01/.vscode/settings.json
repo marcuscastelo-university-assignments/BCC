@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "unordered_map": "cpp",
+        "optional": "cpp",
+        "random": "cpp",
+        "limits": "cpp",
+        "memory": "cpp",
+        "new": "cpp",
+        "numeric": "cpp",
+        "*.tcc": "cpp",
+        "cmath": "cpp",
+        "utility": "cpp",
+        "valarray": "cpp",
+        "variant": "cpp",
+        "functional": "cpp",
+        "type_traits": "cpp"
+    }
+}

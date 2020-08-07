@@ -1,0 +1,31 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "C/C++: gcc build active file",
+            "command": "/usr/bin/gcc",
+            "args": [
+                "-g",
+                "-lm",
+                "${workspaceFolder}/main.c",
+                "${workspaceFolder}/edge.c",
+                "${workspaceFolder}/graph.c",
+                "${workspaceFolder}/list.c",
+                "${workspaceFolder}/priority_queue.c",
+                "-o",
+                "${workspaceFolder}/main"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+    "version": "2.0.0"
+}

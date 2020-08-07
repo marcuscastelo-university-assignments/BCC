@@ -1,0 +1,67 @@
+.data
+    prompt_fact1: .asciiz "entrada do inteiro x para x!:\n"
+    result: .asciiz "Factorial = "
+.text
+main:
+	j fact_f
+fact_f:
+    # show prompt_fact1
+    li        $v0, 4
+    la        $a0, prompt_fact1
+    syscall
+    # read x
+    li        $v0, 5
+    syscall
+    # function call
+    move      $a0, $v0
+    addi    $sp, $sp, -8
+    jal      factorial      # chama o fatorial e sava a posi��o em $ra
+    addi    $sp, $sp, 8
+    move      $t0, $v0        # $t0 = $v0
+    # show prompt_fact1
+    li        $v0, 4
+    la        $a0, result
+    syscall
+    # print the result
+    li        $v0, 1        # system call #1 - print int
+    move      $a0, $t0        # $a0 = $t0
+    syscall                # execute
+
+    mtc1 $a0, $f12
+    cvt.s.w $f12, $f12
+
+    mov.s $f22,$12
+
+    j save_and_return
+
+    # return 0
+    li        $v0, 10        # $v0 = 10
+    syscall
+
+
+.text
+factorial:
+    # ajusta ponteiro na pilha
+    addi    $sp, $sp, -8
+    # salva no ponteiro 
+    sw      $s0, 4($sp)
+    sw      $ra, 0($sp)
+    bne     $a0, 0, else  #a0!=0
+    li    $v0, 1    # return 1
+    j fact_return
+
+
+else:
+    # backup $a0
+    move    $s0, $a0
+    addi    $a0, $a0, -1 # x -= 1
+    jal     factorial
+    #inicia aqui
+    multu $v0, $s0
+    mflo $v0
+    j fact_return
+fact_return:
+    lw      $s0, 4($sp)
+    lw      $ra, 0($sp)
+    addi    $sp, $sp, 8
+    jr      $ra

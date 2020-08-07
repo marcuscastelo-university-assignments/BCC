@@ -1,0 +1,48 @@
+1 - Organização vs Arquitetura:
+
+[Arquitetura]
+O modo como as funcionalidades são "declaradas", é constituída de definições abstratas, servindo de interface de comunicação entre níveis.
+
+[Organização]
+A implementação das funcionalidades declaradas pela arquitetura, pode mudar ao longo do tempo sem perder compatilibidade com sistemas antigos, supondo que a arquitetura ainda possua forma suficientemente similar à anterior.
+
+2 - Hardware vs Software:
+
+[Hardware]
+Peças físicas e tangíveis que são arranjadas de forma a formar um circuito lógico que executa instruções. É imutável, inerente ao modo como foi construído.
+
+[Software]
+Lógica que não é inerente às peças do computador, mas sim ao estado delas - o estado da memória. O software é, portanto, virtual e mutável, desde que a memória onde ele está armazenado seja mutável.
+
+3 - Tradução vs Interpretação:
+
+[Tradução]
+Processo que transforma código fonte em código de máquina ou outra forma de nível inferior a ele. Para isso, o compilador lê o código fonte por inteiro, identificando erros de sintaxe e operações inválidas, avisando o programador de qualquer possível anomalia e, de acordo com as regras da linguagem, transforma-o em código de nível mais baixo (assembly ou código de máquina).
+
+[Interpretação]
+Na interpretação, o código é lido por um programa chamado interpretador, linha a linha, sem gerar um novo arquivo compilado. O interpretador executa a linha de acordo com o contexto das anteriores, e se houver algum erro, ele sempre acontecerá em tempo de execução. Há, porém, um processo de compilação durante a interpretação que é definido de acordo com o interpretador.
+
+4 - Máquina Multinível:
+
+É uma máquina que possui abstrações em vários níveis. Começando, claro, com a linguagem de máquina real que opera com instruções binárias, de acordo com a arquitetura do processador. E em cada próximo nível de abstração, a linguagem de máquina do nível é baseada no nível anterior. Por exemplo, ao escrever programas para o sistema operacional, usa-se a linguagem disponibilizada pelo sistema, e não assembly ou código de máquina.
+
+5 - Arquitetura de Von Neumann e vantagens:
+
+A arquitetura de Von Neumann possui um elemento central chamado CPU (Central Processing Unit) e dois externos \: a memória primária e as portas de I/O (Input / Output). Dentro da CPU, ainda temos subdivisões. São elas a ALU (Arithmetic and Logic Unit) e a CU (Control Unit).
+
+[Memória Primária]
+A memória primária é responsável por armazenar dados e instruções - que é a principal caracteristica da arquitetura. 
+
+[I/O]
+As portas I/O são as portas de entrada e saida, basicamente a interação da máquina com seu usuário. São portas I/O teclados, monitores, impressoras, mouse, entre outros.
+
+[CPU]
+Composta de CU e ALU
+- [CU]: Unidade de controle da execução do programa, como acesso a registradores e memória primária. 
+- [ALU]: Responsável por realizar operações aritméticas como soma, subtração, multiplicação e divisão de inteiros e de ponto flutuante.
+
+[Vantagem]
+Como apontado na seção de memória, a principal vantagem da arquitetura de Von Neumann é a capacidade de armazenar o programa a ser executado na mesma memória que os dados.
+
+6 - Funções da CPU:
+

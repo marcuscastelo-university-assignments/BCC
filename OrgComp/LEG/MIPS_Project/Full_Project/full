@@ -1,0 +1,835 @@
+.data
+
+	prompt_float_x: .asciiz "entrada do float x:\n"
+	prompt_float_y: .asciiz "entrada do float y:\n"
+    
+	prompt_int_x: .asciiz "entrada do inteiro x:\n"
+	prompt_int_y: .asciiz "entrada do inteiro y:\n"
+    
+	prompt_add: .asciiz "insira os valores para x + y:\n"
+	prompt_sub: .asciiz "insira os valores para x - y:\n"
+	prompt_mult: .asciiz "insira os valores para x * y:\n"
+	prompt_div: .asciiz "insira os valores para x / y:\n"
+	prompt_divint: .asciiz "insira os valores para x // y:\n"
+	prompt_div_error: .asciiz "valor inválido, não pode ser 0\n"
+
+   
+	prompt_sqrt: .asciiz "insira os valores para sqrt(x):\n"
+	prompt_pow: .asciiz "insira os valores para x^y:\n"
+	prompt_fact: .asciiz "insira os valores para x!:\n"
+	prompt_tab: .asciiz "insira os valores para tabuada de x (de 1 a y):\n"
+	prompt_fibo: .asciiz "insira os valores para a sequencia de f(x) a f(y):\n"
+    
+    	zero_f: .float 0.0
+    	n1_pow: .float 1.0
+         
+         
+      	strPromptMode: .asciiz "Insira 'C' para calculo\nInsira 'M' para memoria\nInsira outro simbolo (tamanho maximo de 1 caracter) para sair\n\n"
+         
+    	strNewLine: .asciiz "\n"
+
+    	result: .asciiz "Resultado: \n"
+	strChoiceC: .asciiz "C\n"
+	strChoiceM: .asciiz "M\n"
+	strEnd: .asciiz "End\n"
+	Cprompt: .asciiz "Digite o numero que precede a funcao desejada para executa-la \n\t00 - Menu Inicial \n\t01 - Adicao \n\t02 - Subtracao \n\t03 - Multiplicacao \n\t04 - Divisao real \n\t05 - Divisao inteira \n\t06 - Raiz Quadrada \n\t07 - Potencia \n\t08 - Fatorial \n\t09 - Fibonacci \n\t10 - Tabuada \n\tOutros Valores - Encerrar \n \n"
+	Mprompt: .asciiz "Digite M1 para acessar a memoria mais recente\nDigite M2 para acessar a segunda memoria mais recente\nDigite M3 para acessar a terceira memoria mais recente\nDigite outros valores (com no maximo dois digitos) para voltar ao menu incial\n\n"
+	2byteBuffer_modeChoice: .space 2
+	4byteBuffer_memoryChoice: .space 4
+	One_s: .asciiz "1"
+	Two_s: .asciiz "2"
+	Three_s: .asciiz "3"
+	Not_Saved: .asciiz "Value not stored\n"
+
+	M1_OP:	.word 0
+	M1_X:	.word 0
+	M1_Y:	.word 0
+	
+	M2_OP:	.word 0
+	M2_X:	.word 0
+	M2_Y:	.word 0
+	
+	M3_OP:	.word 0
+	M3_X:	.word 0
+	M3_Y:	.word 0
+	
+
+    	#One_pr: .asciiz "//M1//\n"
+	#Two_pr: .asciiz "\n//M2//\n"
+	#Three_pr: .asciiz "\n//M3//\n"
+
+.text
+
+.globl main
+main:
+	li 	$s7, 0	# Contador de memórias utilizadas
+	j 	start_menu
+
+start_menu:
+	li 	$s6, 0	# Booleano que distingue as funções de Memória ou de Cálculo (Memória ignora o input do usuário)
+	
+	# Exibe o texto do menu, pedindo por C, M ou outro
+	li      $v0, 4
+	la      $a0, strPromptMode
+	syscall
+
+	# Lê a opção selecionada (string) e a insere num buffer de 2 bytes
+	li	$v0, 8
+	li 	$a1, 2
+	la	$a0, 2byteBuffer_modeChoice
+	syscall
+	
+	# Cria ponteiros para o primeiro byte das strings
+	la 	$t0, 2byteBuffer_modeChoice	# Input do usuário
+	la 	$t1, strChoiceC 		# Opção C (Cálculo)
+	la 	$t2, strChoiceM 		# Opção M (Memória)
+	
+	# Guarda apenas o primeiro byte de cada string em três registradores
+	lb 	$t3($t0)
+	lb	$t4($t1)
+	lb 	$t5($t2) 
+	
+	beq 	$t3, $t4, c_mode # Se o primeiro byte for C, vá para o branch de Cálculo
+	beq 	$t3, $t5, m_mode # Se o primeiro byte for M, vá para o branch de Memória
+	
+	# Se não for nem M nem C, encerre o programa
+	j 	end_program
+	
+
+### Funções de armazenamento na memória
+
+# Desloca as memórias mais atuais para as mais antigas
+# M2 -> M3; M1 -> M2
+# Após, salva em M1 os dados do último cálculo feito
+
+store_operation_in_memory:
+	lw	$t0, M2_OP
+	sw	$t0, M3_OP
+	lw	$t0, M1_OP
+	sw	$t0, M2_OP
+	sw	$v0, M1_OP #$v0 representa a operação utilizada no último cálculo
+	jr	$ra
+
+mem_roll_x:
+	lw	$t0, M2_X
+	sw	$t0, M3_X
+	lw	$t0, M1_X
+	sw	$t0, M2_X
+	jr	$ra
+mem_roll_y:
+	lw	$t0, M2_Y
+	sw	$t0, M3_Y
+	lw	$t0, M1_Y
+	sw	$t0, M2_Y
+	jr	$ra
+	
+	
+store_x_int_in_memory:
+	addi	$sp, $sp, -4
+	sw	$ra, 0($sp)
+
+	jal	mem_roll_x
+	sw	$s1, M1_X
+
+	lw	$ra, 0($sp)
+	addi	$sp, $sp, 4
+	jr 	$ra
+		
+store_y_int_in_memory:
+	addi	$sp, $sp, -4
+	sw	$ra, 0($sp)
+
+	jal	mem_roll_y
+	sw	$s2, M1_Y
+	
+	lw	$ra, 0($sp)
+	addi	$sp, $sp, 4
+	jr 	$ra
+
+
+store_x_float_in_memory:
+	addi	$sp, $sp, -4
+	sw	$ra, 0($sp)
+	
+	jal	mem_roll_x
+	swc1	$f1, M1_X
+	
+	lw	$ra, 0($sp)
+	addi	$sp, $sp, 4
+	jr 	$ra
+
+store_y_float_in_memory:
+	addi	$sp, $sp, -4
+	sw	$ra, 0($sp)
+	
+	jal	mem_roll_y
+	swc1	$f2, M1_Y
+	
+	lw	$ra, 0($sp)
+	addi	$sp, $sp, 4
+	jr 	$ra
+
+c_mode:
+	# Ask for operation number
+	li      $v0, 4
+	la      $a0, Cprompt
+	syscall
+	li 	$v0, 5
+	syscall
+	
+	jal	store_operation_in_memory
+
+c_mode_post_vars:
+
+	# Goto menu inicial on 0
+    	beq 	$v0,0,start_menu
+    	
+	# Basic operations    	
+	bne 	$v0,1,not_add
+		la $a0, prompt_add
+		la $a1, addd
+		j arit
+	not_add:
+	bne 	$v0,2,not_sub
+		la $a0, prompt_sub
+		la $a1, subb
+		j arit
+	not_sub:
+	bne 	$v0,3,not_mult
+		la $a0, prompt_mult
+		la $a1, multt
+		j arit
+	not_mult:
+	bne 	$v0,4,not_div
+		la $a0, prompt_div
+		la $a1, divv
+		j arit
+	not_div:
+	
+	# Other
+	
+	beq 	$v0, 5, divint_f
+	beq 	$v0, 6, sqrt_f
+	beq 	$v0, 7, pow_f
+	beq 	$v0, 8, fact_f
+	beq 	$v0, 9, fib_f
+	beq 	$v0, 10, tab_f		
+	
+	
+	
+	
+	j end_program	
+	
+m_mode:
+	li 	$s6, 1
+	
+	li      $v0, 4
+	la      $a0, Mprompt
+	syscall
+
+	li 	$a1, 4
+	la	$a0, buf_4b	
+	
+	li	$v0, 8
+	syscall
+	
+
+	la $t0, buf_4b
+	la $t1, strChoiceM
+	
+	lb $t3($t0)  #load a byte from each string
+	lb $t4($t1)
+	
+	bne $t3, $t4, start_menu
+		
+	lb $t1, One_s
+	lb $t2, Two_s
+	lb $t3, Three_s
+	
+	lb $t4, 1($t0)
+	
+	# Route which M (M1, M2, M3)
+        beq $t4, $t1, M1
+        beq $t4, $t2, M2
+        beq $t4, $t3, M3
+
+	j m_mode
+	
+M1:
+	
+	slti $t0, $s7, 1
+	bgtz $t0, M_Error
+
+	lw	$v0, M1_OP
+	lw	$s1, M1_X
+	lw	$s2, M1_Y
+	lwc1	$f1, M1_X
+	lwc1	$f2, M1_Y
+	
+	j c_mode_post_vars
+
+M2:
+	slti $t0, $s7, 2
+	bgtz $t0,M_Error
+
+	lw	$v0, M2_OP
+	lw	$s1, M2_X
+	lw	$s2, M2_Y
+	lwc1	$f1, M2_X
+	lwc1	$f2, M2_Y
+	
+	j c_mode_post_vars
+M3:
+	slti $t0, $s7, 3
+	bgtz $t0,M_Error
+
+	lw	$v0, M3_OP
+	lw	$s1, M3_X
+	lw	$s2, M3_Y
+	lwc1	$f1, M3_X
+	lwc1	$f2, M3_Y
+	
+	j c_mode_post_vars
+	
+M_Error:
+	# Print Not saved and try M again
+	li $v0, 4
+	la $a0, Not_Saved
+	syscall
+	j m_mode
+	
+save_and_goto_menu:
+	bnez	$s6, start_menu
+	addi 	$s7, $s7, 1  # saved number of times memory saved
+	j 	start_menu
+
+end_program:
+	# Print "End"
+	la $a0,	strEnd
+	li $v0,	4
+	syscall
+	
+	# Exit syscall
+	li $v0, 10
+	syscall
+
+
+###########################################################################            add
+
+# void print_result_float(float f12);
+print_result_float:
+	# Show 'Result='
+    	li	$v0, 4
+	la	$a0, result
+	syscall
+	
+	# $f12 is passed by parameter
+	li	$v0, 2
+	syscall
+	
+	li	$v0, 4
+	la	$a0, strNewLine
+	syscall
+	
+	jr $ra
+
+# void print_result_int(int a0);
+print_result_int:
+	move 	$t0, $a0
+	
+	# Show 'Result='
+    	li	$v0, 4
+	la	$a0, result
+	syscall
+	
+	
+	move	$a0, $t0
+	li	$v0, 1
+	syscall
+	
+	li	$v0, 4
+	la	$a0, strNewLine
+	syscall
+	
+	move	$a0, $t0
+	jr $ra
+	
+	
+request_float:	
+	# $a0  comes by argument as promt_str
+	li	$v0, 4
+    	syscall 
+
+	li	$v0, 6
+    	syscall
+    	
+    	jr $ra    	
+    	
+request_int:
+	# $a0  comes by argument as promt_str
+	li	$v0, 4
+    	syscall 
+
+	li	$v0, 5
+    	syscall
+    	
+    	jr $ra
+    	
+convert_int_to_float:
+	mtc1 	$a0, $f0
+	cvt.s.w $f0, $f0
+	jr $ra
+
+
+
+# pair<float,float> ($f1,$f2) request_float(char *a0_prompt);
+request_x_y:
+	addi 	$sp, $sp, -8
+	sw	$ra, 0($sp)
+	sw	$a0, 4($sp)
+	
+	# $a0  comes by argument as promt_str
+	li	$v0, 4
+    	syscall  	
+    	
+    	la	$a0, prompt_float_x
+	jal 	request_float
+    	mov.s	$f1, $f0
+    	
+    	la	$a0, prompt_float_y
+    	jal	request_float
+    	mov.s	$f2, $f0
+    	
+	lw	$ra, 0($sp)
+	lw	$a0, 4($sp)
+	addi	$sp, $sp, 8
+    	jr $ra
+
+# void arit($a0_prompt_op_1)
+arit:
+	bnez 	$s6, arit_post_vars
+    	# Request x for 'x + y' and save in f1
+	jal	request_x_y
+	jal	store_x_float_in_memory
+	jal	store_y_float_in_memory
+	# At this point x is f1 and y is f2
+    	j 	arit_post_vars
+   
+arit_post_vars:
+	# Call $a1, defined at Ccode
+    	jalr	$ra, $a1
+
+    	mov.s	$f12, $f0
+    	jal print_result_float
+	
+	# Put result on f22 aswell (default saved location)
+    	mov.s $f22,$f12
+    	j save_and_goto_menu
+
+# float_f0 addd(f1, f2)
+addd:
+	add.s $f0,$f1,$f2	
+	jr $ra
+
+# float_f0 subb(f1,f2)
+subb:
+	sub.s $f0,$f1,$f2	
+	jr $ra
+
+# float_f0 multt(f1,f2)
+multt:
+	mul.s $f0,$f1,$f2	
+	jr $ra
+	
+divv:
+	addi 	$sp, $sp, -4
+	sw	$ra, 0($sp)
+	
+	jal 	get_div
+	div.s 	$f0,$f1,$f2
+	
+	lw	$ra, 0($sp)
+	addi	$sp, $sp, 4
+	jr 	$ra
+
+get_div:
+	addi 	$sp, $sp, -4
+	sw	$ra, 0($sp)
+	
+	j skip_div_error
+	div_error_message:
+		li	$v0, 4
+		la	$a0, prompt_div_error
+		syscall
+		
+		la	$a0, prompt_float_y
+		jal 	request_float
+		mov.s 	$f2, $f0
+		jal	store_y_float_in_memory
+	j skip_div_error
+	skip_div_error:
+	
+	lwc1	$f0, zero_f
+	c.eq.s	$f2,$f0
+	bc1t	div_error_message
+	
+	lw	$ra, 0($sp)
+	addi	$sp, $sp, 4
+	jr	$ra
+
+
+### DIVISÃO INTEIRA
+
+
+divint_f:
+	bnez 	$s6, divint_f_post_vars
+	# Print pow message
+	li	$v0, 4
+	la	$a0, prompt_divint
+	syscall
+
+	# Request x for x//y
+	la	$a0, prompt_int_x
+	jal 	request_int
+	move	$s1, $v0
+	
+	# Request y for x//y
+	la	$a0, prompt_int_y
+	jal	request_int
+	move	$s2, $v0
+
+	jal	store_x_int_in_memory
+	jal	store_y_int_in_memory
+
+divint_f_post_vars:
+		
+	jal 	assert_divint_not_by_zero
+	
+	div	$a0, $s1, $s2
+	jal	print_result_int
+	
+	j	save_and_goto_menu
+
+assert_divint_not_by_zero:
+	addi 	$sp, $sp, -4
+	sw	$ra, 0($sp)
+	
+	j skip_divint_error
+	divint_error_message:
+		li	$v0, 4
+		la	$a0, prompt_div_error
+		syscall
+		
+		la	$a0, prompt_int_y
+		jal 	request_int
+		move 	$s2, $v0
+		jal	store_y_int_in_memory
+	j skip_divint_error
+	skip_divint_error:
+	
+	beqz	$s2, divint_error_message
+	
+	lw	$ra, 0($sp)
+	addi	$sp, $sp, 4
+	jr	$ra
+
+
+###########################################################################  sqrt
+
+
+sqrt_f:
+	bnez 	$s6, sqrt_f_post_vars
+	li	$v0, 4
+	la	$a0, prompt_sqrt
+	syscall
+
+	la	$a0, prompt_float_x
+	jal 	request_float
+	mov.s	$f1, $f0
+	
+	jal	store_x_float_in_memory
+	
+	j 	sqrt_f_post_vars
+	
+sqrt_f_post_vars:
+	sqrt.s	$f12,$f1	
+	jal	print_result_float
+    
+	mov.s	$f22,$f12
+	j	save_and_goto_menu
+
+
+###########################################################################   pow
+
+
+pow_f:
+	bnez 	$s6, pow_f_post_vars
+	# Print pow message
+	li	$v0, 4
+	la	$a0, prompt_pow
+	syscall
+
+	# Request x for (x^y)
+	la	$a0, prompt_float_x
+	jal 	request_float
+	mov.s	$f1, $f0
+	
+	# Request y for (x^y)
+	la	$a0, prompt_int_y
+	jal	request_int
+	move	$s2, $v0
+	
+	jal	store_y_int_in_memory
+	jal	store_x_float_in_memory
+	
+	j 	pow_f_post_vars
+	
+pow_f_post_vars:
+	# Do not move this code until not_negative
+	# f0 = 1/f0, a2 = -a2
+	bgtz	$s2, not_negative
+	mul 	$s2, $s2, -1
+	lwc1	$f20, n1_pow
+	div.s	$f1, $f20, $f1
+	
+	j not_negative
+	not_negative:
+	
+    	lwc1 	$f12, n1_pow
+    	
+	jal	power2
+	
+    	mov.s	$f12,$f0
+    	jal print_result_float
+ 
+    	mov.s	$f22,$f12
+    	j	save_and_goto_menu
+
+power2:	
+	bne	$s2, 0, power2inner
+	mov.s	$f0, $f12
+	jr	$ra
+
+power2inner:
+	addi	$s2, $s2, -1
+	mul.s	$f12, $f12, $f1
+	j	power2
+	
+
+
+###########################################################################   fact
+
+
+fact_f:
+	bnez 	$s6, fact_f_post_vars
+	li	$v0, 4
+	la	$a0, prompt_fact
+	syscall
+
+	la	$a0, prompt_int_x
+	jal	request_int
+	move	$s1, $v0
+	
+	jal	store_x_int_in_memory
+	
+	j	fact_f_post_vars
+
+fact_f_post_vars:
+
+	jal	factorial # returns to v0
+	
+	move	$a0, $v0 
+	jal	print_result_int
+	
+	jal 	convert_int_to_float  # convert a0 to f0
+	mov.s 	$f22, $f0
+	
+	j 	save_and_goto_menu
+
+factorial:
+	addi	$sp, $sp, -8
+	
+	sw	$s0, 4($sp)
+	sw	$ra, 0($sp)
+	bne	$s1, 0, else_fact
+	li	$v0, 1
+	j	fact_return
+else_fact:    
+	move    $s0, $s1
+	addi    $s1, $s1, -1
+	jal     factorial
+   
+	multu $v0, $s0
+	mflo $v0
+	j fact_return
+fact_return:
+	lw      $s0, 4($sp)
+	lw      $ra, 0($sp)
+	addi    $sp, $sp, 8
+	jr      $ra
+
+########################################################################### fib
+
+
+fib_f:
+	bnez 	$s6, fib_f_post_vars
+	li	$v0, 4
+	la	$a0, prompt_fibo
+	syscall
+	
+	la	$a0, prompt_int_x
+	jal 	request_int
+	move	$s1, $v0	#s1 is the lower bound of the interval
+
+	la	$a0, prompt_int_y
+	jal 	request_int
+	move	$s2, $v0	#s2 is the upper bound of the interval
+	move	$s3, $s2	#s3 is the reverse counter from now on
+	jal	store_x_int_in_memory
+	jal	store_y_int_in_memory
+	
+	j	fib_f_post_vars
+fib_f_post_vars:
+
+	move	$t0, $v0
+	li 	$v0, 4
+	la	$a0, result
+	syscall
+	
+	move	$v0, $t0
+
+	addi    $sp, $sp, -8
+	jal	fibonacci
+	addi    $sp, $sp, 8
+
+	jal 	convert_int_to_float
+
+	j 	save_and_goto_menu
+	
+fibonacci:
+	addi    $sp, $sp, -8
+
+	sw      $s4, 4($sp)
+	sw      $ra, 0($sp)
+    
+	bne     $s3, 0, else_fib
+	
+	li 	$v0, 0
+	j 	fibo_return
+
+
+else_fib:
+	move    $s4, $zero
+	addi    $s3, $s3, -1
+	jal     fibonacci
+	
+	
+	beq 	$s3, 1, onecase
+	j 	secondpart
+	
+secondpart:
+	addi 	$s3, $s3, 1
+
+	add 	$v0, $v0, $s4
+	sw	$v0, 12($sp)
+	
+	blt	$s3, $s1, not_print
+	move 	$t0, $v0
+	
+	li	$v0, 1
+	move	$a0, $t0
+	syscall
+	
+	li	$v0, 4
+	la	$a0, strNewLine
+	syscall
+	
+	move	$v0, $t0 
+	
+	j not_print
+	not_print:
+	
+	
+	j fibo_return
+
+fibo_return:
+	lw      $s4, 4($sp)
+	lw      $ra, 0($sp)
+    
+	addi    $sp, $sp, 8
+	jr      $ra
+
+onecase:
+	li 	$s4, 1
+	j 	secondpart
+
+
+
+
+########################################################################### tab
+
+
+tab_f:
+	bnez 	$s6, tab_f_post_vars
+	# Print requisition
+	li        $v0, 4
+	la        $a0, prompt_tab
+	syscall
+	
+	# Request x
+    	la	$a0, prompt_float_x
+	jal	request_float
+	mov.s 	$f1,$f0
+
+	la	$a0, prompt_int_y
+	jal	request_int
+	move	$s2, $v0
+	
+	jal	store_y_int_in_memory
+	jal	store_x_float_in_memory
+	
+	j	tab_f_post_vars
+	
+tab_f_post_vars:
+	lwc1	$f0, zero_f
+	
+	# Print "Result:\n"
+	li	$v0, 4
+	la	$a0, result
+	syscall
+	
+	la	$a0, strNewLine
+	syscall
+	#
+	
+    	jal	tab
+	
+	mov.s	$f22, $f0
+	j 	save_and_goto_menu
+
+tab:
+	beq $s2,0,tab_return
+	add.s $f0,$f0,$f1
+	addi $s2,$s2,-1
+	
+	# Print "%f\n"
+	li $v0,2
+	mov.s $f12,$f0
+	syscall
+	
+	li $v0,4
+	la $a0,strNewLine
+	syscall
+	#
+	
+	j tab	
+
+tab_return:
+	jr $ra
+
+
+
+
+
+
+

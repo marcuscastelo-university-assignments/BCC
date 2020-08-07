@@ -1,0 +1,79 @@
+.data
+    prompt_fibo1: .asciiz "entrada do inteiro x para F_x:\n"
+    result: .asciiz "Fibonacci = "
+.text
+main:
+	j fib_f
+fib_f:
+    # show prompt_fibo1
+    li        $v0, 4
+    la        $a0, prompt_fibo1
+    syscall
+    # read x
+    li        $v0, 5
+    syscall
+    # function call
+    move      $a0, $v0
+    addi    $sp, $sp, -8
+    jal      fibonacci      # chama o fatorial e sava a posi��o em $ra
+    addi    $sp, $sp, 8
+    move      $t0, $v0        # $t0 = $v0
+    # show prompt_fibo1
+    li        $v0, 4
+    la        $a0, result
+    syscall
+    # print the result
+    li        $v0, 1        # system call #1 - print int
+    move      $a0, $t0        # $a0 = $t0
+    syscall                # execute
+
+    mtc1 $a0, $f12
+    cvt.s.w $f12, $f12
+
+    mov.s $f22,$12
+
+    j save_and_return
+
+
+    # return 0
+    li        $v0, 10        # $v0 = 10
+    syscall
+
+
+.text
+fibonacci:
+    # ajusta ponteiro na pilha
+    addi    $sp, $sp, -8
+    # salva no ponteiro 
+    sw      $s0, 4($sp)
+    sw      $ra, 0($sp)
+    bne     $a0, 0, else  #a0!=0
+    li    $v0, 0    # return 1
+    j fibo_return
+
+
+else:
+    # backup $a0
+    move    $s0, $zero
+    addi    $a0, $a0, -1 # x -= 1
+    jal     fibonacci
+    #inicia aqui
+    beq $a0, 1, onecase
+    j secondpart
+secondpart:
+    addi $a0,$a0, 1
+    add $v0,$v0,$s0
+    lw $t0, 12($sp)
+    add $t0,$zero,$v0
+    sw $t0, 12($sp)
+    j fibo_return
+
+fibo_return:
+    lw      $s0, 4($sp)
+    lw      $ra, 0($sp)
+    addi    $sp, $sp, 8
+    jr      $ra
+
+onecase:
+    li $s0, 1
+    j secondpart

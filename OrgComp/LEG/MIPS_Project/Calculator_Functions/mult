@@ -1,0 +1,48 @@
+.data
+    space: .asciiz "\n"
+    prompt_mult1: .asciiz "entrada do inteiro x para x * y:\n"
+    prompt_mult2: .asciiz "entrada do inteiro y para x * y:\n"
+    result: .asciiz "Resultado = "
+.text
+main:
+	j mult_f
+mult_f:
+    # show prompt
+    li        $v0, 4
+    la        $a0, prompt_mult1
+    syscall
+    # read x
+    li        $v0, 6
+    syscall
+    mov.s      $f1, $f0 # 'x' to $t0
+    # show prompt
+    li        $v0, 4
+    la        $a0, prompt_mult2
+    syscall
+    # read x
+    li        $v0, 6
+    syscall
+    # function call
+    jal      multt      # chama o fatorial e sava a posi��o em $ra
+    move      $t0, $v0        # $t0 = $v0
+    # show prompt
+    li 	      $v0, 4
+    la        $a0, result
+    syscall
+    # return 0
+    mov.s $f12,$f0
+    li        $v0, 2
+    syscall
+
+    mov.s $f22,$f12
+    j save_and_return
+
+
+    li        $v0, 10        # $v0 = 10
+    syscall
+
+
+.text
+multt:
+	mul.s $f0,$f1,$f0	
+	jr $ra

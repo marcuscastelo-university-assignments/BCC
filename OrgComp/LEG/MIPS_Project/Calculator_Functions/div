@@ -1,0 +1,65 @@
+.data
+    space: .asciiz "\n"
+    prompt_div1: .asciiz "entrada do inteiro x para x / y:\n"
+    prompt_div2: .asciiz "entrada do inteiro y para x / y:\n"
+    prompt_div3: .asciiz "Wrong value, y must be different from 0\n"
+    result: .asciiz "Resultado = "
+    zero_f: .float 0.0
+.text
+main:
+	j div_f
+div_f:
+    # show prompt
+    li        $v0, 4
+    la        $a0, prompt_div1
+    syscall
+    # read x
+    li        $v0, 6
+    syscall
+    mov.s      $f20, $f0 # 'x' to $t0
+    jal get_div
+    # function call
+    jal      divv      # chama o fatorial e sava a posi��o em $ra
+    move      $t0, $v0        # $t0 = $v0
+    # show prompt
+    li 	      $v0, 4
+    la        $a0, result
+    syscall
+    # return 0
+    mov.s $f12,$f0
+    li        $v0, 2
+    syscall
+
+    mov.s $f22,$f12
+    j save_and_return
+
+
+    li        $v0, 10        # $v0 = 10
+    syscall
+
+
+.text
+get_div:
+    # show prompt
+    li        $v0, 4
+    la        $a0, prompt_div2
+    syscall
+    # read x
+    li        $v0, 6
+    syscall
+    lwc1 $f1,zero_f
+    c.eq.s $f0,$f1
+    bc1t get_div_message
+    mov.s $f21,$f0
+    jr $ra
+
+get_div_message:
+    # show prompt
+	li        $v0, 4
+	la        $a0, prompt_div3
+	syscall
+	j get_div
+ 
+divv:
+	div.s $f0,$f20,$f21	
+	jr $ra

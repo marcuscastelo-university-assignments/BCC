@@ -1,0 +1,59 @@
+.data
+    prompt_pow1: .asciiz "entrada do inteiro x para x^y:\n"
+    prompt_pow2: .asciiz "entrada do inteiro y para x^y:\n"
+    result: .asciiz "Potencia = "
+    n1_pow: .float 1.0
+.text
+main:
+	j pow_f
+pow_f:
+    # show prompt
+    li        $v0, 4
+    la        $a0, prompt_pow1
+    syscall
+    # read x
+    li        $v0, 6
+    syscall
+    mov.s $f20, $f0
+    # show prompt
+    li        $v0, 4
+    la        $a0, prompt_pow2
+    syscall
+    # read x
+    li        $v0, 5
+    syscall
+    # function call
+    move      $a0, $v0 # 'y' in $a0
+    lwc1 $f0,n1_pow
+    jal      power2      # chama o fatorial e sava a posicao em $ra
+    addi    $sp, $sp, 8
+    move      $t0, $v0        # $t0 = $v0
+    # show prompt
+    li        $v0, 4
+    la        $a0, result
+    syscall
+    # print the result
+    mov.s $f12,$f0
+    li        $v0, 2        # system call #1 - print int
+    move      $a0, $t0        # $a0 = $t0
+    syscall                # execute
+
+    mov.s $f22,$12
+
+    j save_and_return
+
+
+    # return 0
+    li        $v0, 10        # $v0 = 10
+    syscall
+
+
+.text
+power2:
+	beq $a0, 0, power2ret
+	addi $a0, $a0, -1
+	mul.s $f0,$f0, $f20
+	j power2
+
+power2ret:
+	jr $ra

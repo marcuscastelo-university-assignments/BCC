@@ -1,0 +1,38 @@
+.data
+    space: .asciiz "\n"
+    prompt_sqrt1: .asciiz "entrada do inteiro x para sqrt_x:\n"
+    result: .asciiz "Resultado = "
+.text
+main:
+	j sqrt_f
+sqrt_f:
+    # show prompt
+    li        $v0, 4
+    la        $a0, prompt_sqrt1
+    syscall
+    # read x
+    li        $v0, 6
+    syscall
+    # function call
+    jal      sqrtt     # chama o fatorial e sava a posi��o em $ra
+    mov.s $f12,$f0
+    # show prompt
+    li 	      $v0, 4
+    la        $a0, result
+    syscall
+    # return 0
+    li        $v0, 2
+    syscall
+    
+    mov.s $f22,$12
+
+    j save_and_return
+   
+    li        $v0, 10        # $v0 = 10
+    syscall
+
+
+.text
+sqrtt:
+	sqrt.s $f0,$f0	
+	jr $ra

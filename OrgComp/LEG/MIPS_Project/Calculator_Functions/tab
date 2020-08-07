@@ -1,0 +1,61 @@
+.data
+    space: .asciiz "\n"
+    prompt_tab1: .asciiz "entrada do inteiro x para Tabuada de x de 1 a y:\n"
+    prompt_tab2: .asciiz "entrada do inteiro y para Tabuada de x de 1 a y:\n"
+    result: .asciiz "Tabuada =\n"
+    zero_f: .float 0.0
+.text
+main:
+	j tab_f
+tab_f:
+    # show prompt
+    li        $v0, 4
+    la        $a0, prompt_tab1
+    syscall
+    # read x
+    li        $v0, 6
+    syscall
+    mov.s $f20,$f0
+    lwc1 $f0,zero_f
+    # show prompt
+    li        $v0, 4
+    la        $a0, prompt_tab2
+    syscall
+    # read x
+    li        $v0, 5
+    syscall
+    # function call
+    move      $a0, $v0 # 'y' to $a0
+    lwc1 $f22,zero_f
+    jal      tab      # chama o fatorial e sava a posi��o em $ra
+    move      $t0, $v0        # $t0 = $v0
+    # show prompt
+    # return 0
+
+    j save_and_return
+
+
+    li        $v0, 10        # $v0 = 10
+    syscall
+
+
+.text
+tab:
+	beq $a0,0,tab_return
+	add.s $f0,$f0,$f20
+	addi $a0,$a0,-1
+	move $t0,$a0
+	la $a0,space
+	mov.s $f12,$f0
+
+	li $v0,2
+	syscall
+	
+	li $v0,4
+	syscall
+	move $a0,$t0
+	mov.s $f22,$f12
+	j tab	
+
+tab_return:
+	jr $ra

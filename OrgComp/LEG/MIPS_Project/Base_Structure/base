@@ -1,0 +1,213 @@
+.data
+    space: .asciiz "\n"
+    question1: .asciiz "Insira 'C' para calculo\nInsira 'M' para calculo\nInsira outro simbolo (tamanho maximo de 1 caracter) para sair\n\n"
+    prompt2: .asciiz "entrada do inteiro y para x + y:\n"
+    result: .asciiz "Resultado = "
+    codeC: .asciiz "C\n"
+    codeM: .asciiz "M\n"
+    endd: .asciiz "End\n"
+    Cprint: .asciiz "It Matches to C\n"
+    Mprint: .asciiz "It Matches to M\n"
+    Cprompt: .asciiz "Digite o numero que precede a funcao desejada para executa-la\n\t0 - Menu Inicial\n\t1 - Adicao\n\t2 - Subtracao\n\t3 - Multiplicacao\n\t4 - Divisao\n\t5 - Raiz Quadrada\n\t6 - Potencia\n\t7 - Fatorial\n\t8 - Fibonacci\n\t9 - Tabuada\n\tOutros Valores - Encerrar\n\n"
+    Mprompt: .asciiz "Digite M1 para acessar a memoria mais recente\nDigite M2 para acessar a segunda memoria mais recente\nDigite M3 para acessar a terceira memoria mais recente\nDigite outros valores (com no maximo dois digitos) para voltar ao menu incial\n\n"
+    size1: .space 2
+    size2: .space 4
+    One_s: .asciiz "1"
+    Two_s: .asciiz "2"
+    Three_s: .asciiz "3"
+    One_pr: .asciiz "M1\n"
+    Two_pr: .asciiz "\n//M2//\n"
+    Three_pr: .asciiz "\n//M3//\n"
+    First: .asciiz "Hey\n"
+    First2: .asciiz "Hey2\n"
+    Not_Saved: .asciiz "Value not stored\n"
+
+.text
+
+save_and_return:
+	addi $s7,$s7,1 #saved number of times memory saved
+	mov.s $f31,$f30 # saved at $f31 the third oldest
+	mov.s $f30,$f29 # saved at $f30 the second oldest
+	mov.s $f29,$f22 # save the newest at $f29
+	j menu_inicial
+
+
+menu_zero:
+	li $s7,0
+	j menu_inicial
+menu_inicial:
+    # show prompt
+	li      $v0, 4
+	la      $a0, question1
+	syscall
+
+	li 	$a1,2
+	la	$a0,size1	
+	la	$a1, codeC
+	la	$a2, codeM
+	
+	li	$v0, 8
+	syscall
+	la $a0,size1
+	
+	jal strcmp
+
+strcmp:
+	move $t0,$a0
+	move $t1,$a1
+	move $t2,$a2
+	
+	lb $t3($t0)  #load a byte from each string
+	lb $t4($t1)
+	lb $t5($t2) 
+	
+	beq $t3,$t4,CCode
+	beq $t3,$t5,MCode
+	j end_program
+
+M1:
+	la $a0,One_pr
+	li $v0, 4
+	syscall
+	li $t0,1
+	sub $t0,$t0,$s7
+	bgtz $t0,M_Error
+
+	mov.s $f12, $f29 
+	li $v0, 2
+	syscall
+
+
+	j menu_inicial
+
+M2:
+	la $a0,Two_pr
+	li $v0, 4
+	syscall
+	li $t0,2
+	sub $t0,$t0,$s7
+	bgtz $t0,M_Error
+
+	mov.s $f12,$f30 
+	li $v0, 2
+	syscall
+
+
+	j menu_inicial
+
+M3:
+	la $a0,Three_pr
+	li $v0, 4
+	syscall
+	li $t0,1
+	sub $t0,$t0,$s7
+	bgtz $t0,M_Error
+
+	mov.s $f12, $f31 
+	li $v0, 2
+	syscall
+
+
+	j menu_inicial
+
+M_Error:
+	la $a0,Not_Saved
+	li $v0, 4
+	syscall
+	j MCode
+CCode:
+	la $a0,Cprint
+	li $v0,4
+	syscall
+	#j menu_inicial
+
+	li      $v0, 4
+	la      $a0, Cprompt
+	syscall
+	li $v0,5
+	syscall
+    beq $v0,0,menu_inicial
+    #beq $v0,1,add_f
+    #beq $v0,2,sub_f
+    #beq $v0,3,mult_f
+    #beq $v0,4,div_f
+    #beq $v0,5,sqrt_f
+    #beq $v0,6,pow_f
+    #beq $v0,7,fact_f
+    #beq $v0,8,fib_f
+    #beq $v0,9,tab_f	
+    j end_program
+
+MCode:
+	la $a0,Mprint
+	li $v0,4
+	syscall
+	#j menu_inicial
+
+	li      $v0, 4
+	la      $a0, Mprompt
+	syscall
+
+
+	li 	$a1, 4
+	la	$a0, size2	
+	
+	li	$v0, 8
+	syscall
+	la $a0, size2
+	la $a1, codeM	
+	jal strcmp2
+
+strcmp2:
+	move $t0,$a0
+	move $t1,$a1
+	
+	lb $t3($t0)  #load a byte from each string
+	lb $t4($t1)
+	
+	bne $t3,$t4,menu_inicial
+	
+	la $a0, First
+	li $v0, 4
+	syscall
+	
+	
+	addi $t0,$t0,1
+	la $a1,One_s
+	la $a2,Two_s
+	la $a3, Three_s
+	
+	move $t1, $a1
+	move $t2, $a2
+	move $t3, $a3
+	
+	lb $t4,($t0)
+	lb $t5,($t1)
+	lb $t6,($t2)
+	lb $t7,($t3)
+	
+        beq $t4,$t5,M1
+        beq $t4,$t6,M2
+        beq $t4,$t7,M3
+
+	la $a0, First2
+	li $v0, 4
+	syscall
+
+
+	j MCode
+
+
+
+
+
+end_program:
+	la $a0,endd
+	li $v0,4
+	syscall
+	li $v0, 10
+	syscall
+	
+
+	
+	
