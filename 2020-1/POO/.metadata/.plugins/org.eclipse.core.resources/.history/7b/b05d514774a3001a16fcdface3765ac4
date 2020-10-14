@@ -1,0 +1,41 @@
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class RolaDadosTest {
+
+	RolaDados rd = new RolaDados(5);
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	private static int[] getDadosLados(Dado[] dados) {
+		int[] lados = new int[dados.length];
+		int i = 0;
+		for (Dado d: dados) lados[i++] = d.getLado();
+		return lados;
+	}
+	
+	@Test
+	public void testRolarString() {
+		assertArrayEquals(, actuals);
+		rd.rolar("");
+	}
+
+	@Test
+	public void testRolarBooleanArray() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testToString() {
+		fail("Not yet implemented");
+	}
+
+}

@@ -1,0 +1,10 @@
+INDEX VERSION 1.131+/home/marucs/eclipse/POO/.metadata/.plugins/org.eclipse.jdt.core
+277942412.index
+924432793.index
+737498849.index
+1395385645.index
+3803248779.index
+2844525356.index
+2128326306.index
+4294491862.index
+3185053401.index
