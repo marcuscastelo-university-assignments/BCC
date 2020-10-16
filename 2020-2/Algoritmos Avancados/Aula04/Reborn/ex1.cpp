@@ -76,7 +76,7 @@ class Combination
         int heuristic(Combination& target) const {
             int difference = 0;
             for (int i = 0; i < 4; i++)
-                difference += abs(this->d[i] - target.d[i]);
+                difference += 5 - abs(abs(this->d[i] - target.d[i]) - 5);
             return difference; 
         }
 
