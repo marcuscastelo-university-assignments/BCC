@@ -1,0 +1,18 @@
+@startuml
+
+' Configurar preferêcias do usuário na plataforma
+
+
+actor Usuario as user
+
+boundary "Página de preferências" as pref_pages
+
+user -> pref_pages : solicitar modificação das preferências
+pref_pages -> ":UsuarioPrefs" : atualizarPrefs()
+database DB as db
+
+":UsuarioPrefs" -> db : enviar novas informações
+":UsuarioPrefs" -> ":UsuarioPrefs" : atualizar localmente
+pref_pages <-- ":UsuarioPrefs" : exibir novas preferencias
+
+@enduml

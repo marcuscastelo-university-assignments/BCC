@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "unordered_map": "cpp",
+        "ostream": "cpp",
+        "bitset": "cpp",
+        "set": "cpp",
+        "memory": "cpp",
+        "functional": "cpp"
+    }
+}

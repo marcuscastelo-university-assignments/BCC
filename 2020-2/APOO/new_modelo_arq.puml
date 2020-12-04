@@ -1,0 +1,112 @@
+@startuml
+left to right direction
+
+'Autenticação
+() "LoginCadastroPlataforma" as i_webapp_login
+() "LoginUsp" as i_login_usp
+
+'Configuraçoes
+() "AlterarPerfil" as i_change_profile
+
+'Própria agenda
+() "GerenciarPreferênciasDaAgenda" as i_manage_calendar_settings
+() "GerenciarEventos" as i_manage_events
+() "SincronizarEventosUsp" as i_sync_usp
+
+'Outras agendas
+() "SeguirAgenda" as i_follow_calendar
+() "DenunciarConteúdo" as i_report_content
+
+'Administração
+() "GerenciarUsuarios" as i_manage_users
+() "GerenciarBancoDeDados" as i_manage_db
+
+package "Front-end" {
+    [Página da agenda de outro usuário] as visitor_calendar_page
+    [Página de Login e Cadastro] as login_page
+    package "Páginas de Usuário Registrado" {
+        [Página de configurações] as settings_page
+        package "Páginas de Aluno" as students_pages{
+            [Página da agenda] as calendar_page
+            [Página de login USP] as usp_login_page
+        }
+        package "Páginas de Moderação" {
+            [Página de estatísticas da plataforma]
+            package "Páginas de Administração" {
+                [Página de gerenciamento de usuários] as user_management_page
+                [Página de gerenciamento do banco de dados] as db_management_page
+            }
+        }
+    }
+}
+
+package "Back-end" {
+    [Serviço de gerenciamento de banco de dados] as db_service
+    [Serviço de autenticação] as auth_service
+    component "Serviço de gerenciamento de usuários" as user_management_service {
+        [Gerenciamento de usuários] as user_manager
+        [Prefências e configurações dos usuários] as user_prefs_manager
+        [Notificações do usuário] as user_notifications
+    }
+    component "Serviço de gerenciamento de agendas e eventos" as calendar_events_service {
+        [Criação, modificação e deleção de eventos] as event_manager
+        [Configurações da agenda] as calendar_prefs_manager
+        [Serviço de sincronização da agenda com a API] as calendar_sync_service
+        [Busca de agendas públicas]
+    }
+    [Serviço de Notificações] as notification_service
+}
+
+[USP_API] <<External API>> as usp_api
+
+login_page --> i_webapp_login
+
+'TODO: outra página para login usp
+login_page --> i_login_usp
+
+settings_page --> i_change_profile
+
+settings_page .> usp_login_page : <<use>>
+calendar_page .> usp_login_page : <<use>>
+
+calendar_page --> i_manage_events
+calendar_page --> i_sync_usp
+calendar_page --> i_manage_calendar_settings
+visitor_calendar_page --> i_follow_calendar : logado como aluno
+visitor_calendar_page --> i_report_content : logado como qualquer usuário
+
+user_management_page --> i_manage_users
+db_management_page --> i_manage_db
+
+
+i_webapp_login --> auth_service
+i_login_usp --> auth_service
+
+i_change_profile --> user_prefs_manager
+i_follow_calendar --> notification_service
+i_report_content --> notification_service
+
+i_sync_usp --> calendar_sync_service
+i_manage_events --> event_manager
+i_manage_calendar_settings --> calendar_prefs_manager
+
+
+i_manage_users --> user_manager
+i_manage_db --> db_service
+
+
+auth_service ..> usp_api : <<use>>
+calendar_sync_service ..> auth_service : <<use>>
+' calendar_sync_service .u.> usp_api
+user_management_service ..> db_service : <<use>>
+calendar_events_service ..> db_service : <<use>>
+notification_service ..> db_service : <<use>>
+notification_service .> user_notifications : <<use>>
+
+
+db_service -right-> DB
+
+
+'TODO: icone DB
+
+@enduml

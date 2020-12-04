@@ -1,0 +1,93 @@
+@startuml
+/'
+https://plantuml.com/component-diagram
+'/
+
+skinparam defaultTextAlignment center
+
+[Componente de \nautenticação de usuários] as user_comp #Yellow
+/'
+Cadastrar-se a plataforma
+Fazer Login
+Gerenciar usuários
+'/
+
+[Componente de agenda pessoal] as user_panel_comp #DeepSkyBlue
+/'
+Organizar agenda pessoal
+Visualizar informações e materiais colocados nas plataformas da graduação
+'/
+
+[Componente de \ninformações do usuário] as user_preferences_comp #MediumPurple
+/'
+Gerenciar disciplinas cadastradas
+Configurar preferêcias na plataforma
+Configurar dados do perfil pessoal
+Seguir um usuário
+'/
+
+[Componente de\nbanco de dados] as database_comp #ForestGreen
+/'
+Gerenciar banco de dados 
+'/
+
+[Componente de controle\ne moderação] as control_comp #IndianRed
+/'
+Reportar conteúdo impŕoprio
+Moderar informações e arquivos dos usuários
+Estatísticas da plataforma  
+'/
+
+[Componente de APIs] as api_comp #Orange
+
+database "MySQL\n...\nUsuários\nAgendas\n(...)" as app_database #Gray
+
+database_comp -> app_database : <<use>>
+user_comp -right-> database_comp : <<use>>
+user_panel_comp --> database_comp : <<use>>
+user_panel_comp --> api_comp : <<use>>
+user_preferences_comp ---> database_comp : <<use>>
+control_comp ---> database_comp : <<use>>
+api_comp --> user_comp : <<use>>
+
+
+actor Aluno as student
+actor "Usuário Cadastrado" as registered_user
+actor "Moderador" as moderator
+actor "Administrador" as admin
+actor "Visitante" as guest
+student --> user_panel_comp : <<use>>
+student -|> registered_user
+registered_user --> user_preferences_comp : <<use>>
+moderator --> control_comp : <<use>>
+moderator -left-|> registered_user
+admin ----> database_comp : <<use>>
+admin -left-|> moderator
+guest -> user_comp : <<use>>
+
+
+
+' note "LISTA DE OBRIGAÇÕES DO COMPONENTE...\n\
+' \n...DE PAINEL DE USUÁRIO:\n\
+' - Operações de organização da agenda\n\
+' - Exibição adequada das informações coletadas \n pelas APIs em sites de disciplinas da graduação\n\
+' \n...DE CONFIGURAÇÃO/PERSONALIZAÇÃO:\n\
+' - Gerenciamento das disciplinas \n de interesse do usuário\n\
+' - Configurações de preferêcias na plataforma, como \n notificações, temas, idioma, privacidade etc.\n\
+' - Seguir (e deixar de seguir) um usuário\n\
+' \n...DE APIs:\n\
+' - Coleta de informações dos sites de disciplinas\n\
+' \n...CONTROLE E MODERAÇÃO:\n\
+' - Reportar e moderar conteúdo impróprio\n\
+' - Visualização da estatísticas da plataforma\n\
+' - Gerenciamento de contas inválidas\n\
+' \n...DE USUÁRIO:\n\
+' - Criação/cadastro de usuários\n\
+' - Autenticação na plataforma e nas APIs (hashes/tokens de acesso)\n\
+' \n...DO BANCO DE DADOS:\n\
+' - Armazenamento relacional dos dados de usuários, agendas, eventos etc.\n\
+' - Atualizações nos dados armazenados\n\
+' - Recuperação de dados (garantia da integridade)\n\
+' " as comp_duties_list
+
+@endum

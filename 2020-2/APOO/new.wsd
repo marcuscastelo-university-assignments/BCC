@@ -1,0 +1,120 @@
+@startuml
+
+skinparam nodesep 75
+skinparam ranksep 65
+
+class Notificacao{
+    String remetente    
+    String destinatario
+    String titulo
+    String descricao
+}
+
+enum Cargos{
+    ADMINISTRADOR
+    ALUNO
+    MODERADOR
+    VISITANTE
+}
+class Administrador{
+    deletarUsuario()
+    mudarPermissoes()
+}
+class Moderador{
+    removerConteudo()
+    listarDenunciasPendentes()
+    visualizarEstatisticas()
+}
+
+class Usuario{
+    int avalicao
+    String eMail
+    String nome
+    String idUsuario
+    String[] usuariosSeguidos
+    String nUSP
+    String tokenApp
+    String tokenUsp
+
+    cadastrarUsuario()
+    cadastrarDisciplina()
+    removerDisciplina()
+    seguirUsuario()
+    pararDeSeguir()
+    autenticarUsp()
+    reportarConteudo()
+    
+}
+class UsuarioPref{
+    JsonObject[] prefs
+    alterarPrefs()
+}
+class Diciplina{
+    String nome
+    int ano
+    String docenteResponsavel
+    String codigoDaDiciplina
+    String apiId
+}
+
+class Agenda{
+    bool visibilidade
+
+    criarEvento()
+    excluirEvento()
+}
+class Evento{
+    String id
+    String titulo
+    String descricao
+
+    alterarInfo()
+}
+class DataRepeticao{
+    DateTime dataInicial
+    DateTime dataFinal
+    int repeticaoPorDias
+}
+
+enum Prioridade{
+    BAIXISSIMA
+    BAIXA
+    MEDIA_BAIXA
+    MEDIA
+    MEDIA_ALTA
+    ALTA
+    ALTISSIMA
+}
+
+enum TipoDeEvento{
+    ATIVIDADE
+    AULA
+    PROVA
+    TRABALHO
+}
+
+class UspAPI << (S,#337FFF) Singleton >>{
+    autenticarUsp()
+    listarDisciplinas()
+    obterEventos()
+    deslogarUsp()
+}
+Agenda --> UspAPI : <<use>>
+Usuario --> UspAPI : <<use>>
+Moderador <|-- Administrador
+Usuario <|-- Moderador 
+Usuario -left-> Notificacao : <<use>>
+Usuario "1" *-- "1" UsuarioPref
+Usuario "∗" -left- "∗" Diciplina
+Agenda "1" *-- "∗" Evento
+Evento "1" *-- "1..∗" DataRepeticao
+Usuario "1" *-- "1" Agenda
+Usuario "1" *-- "1" Cargos
+Evento "1" *-- "1" TipoDeEvento
+Evento "1" *-- "1" Prioridade
+
+@enduml
+'TODO: Escrever bonito como funciona a data:
+' Define intervalo de repetiçao de um evento
+' ela funciona escolhendo uma data incial e qual sera a taxa de repeticão em dias d | d\in {None, [1 +inf)}
+' tem que lembrar de falar sobre os argumento foda. o do autenticarSite é a platafoooorma
