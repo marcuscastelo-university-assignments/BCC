@@ -1,0 +1,96 @@
+@startuml
+
+skinparam defaultTextAlignment center
+
+' ⋔
+
+|Modelagem de Negócios|
+    start
+    :Reuniões com stakeholders\n\
+para definir o projeto;
+    
+    :Definição do modelo de \n\
+Desenvolvimento de Software;
+
+    (A)
+    detach
+
+
+|Requisitos|
+
+    (A)
+
+    :Definição e modelagem dos \n\
+requisitos de software \n\
+(requisitos funcionais, não funcionais,\n\
+atributos de qualidade);
+    
+    :Detalhamento de características do sistema;
+    if (Sistema precisa de detalhamento?) is (Sim) then
+        :Elaboração de Casos de Uso \n\
+(Descrição textual,Modelo UML);
+        :Cenários de Atributos de Qualidade;
+    else (Não)
+    endif
+
+    ' backward:Contato com\nstakeholders;
+    if (Requisitos estão bem definidos?) is (Não) then
+    
+    (A)
+
+    else (Sim)
+    endif
+
+    (B)
+
+    detach
+|Análise e Design de Projeto|
+
+    (B)
+    :Transformação dos requisitos\n\
+em componentes e elementos do sistema;
+
+    :Definição (ou criação) de padrão\n\
+arquitetural para o sistema;
+
+    :Modelagem conceitual do sistema\n\
+(modelo abstrato com \n\
+elementos/conceitos/classes\n\
+importantes);
+
+    :Definição de serviços, APIs, libs,\n\
+interfaces que serão utilizados;
+
+
+    :Identificação e diagramação dos elementos \n\
+de cada componente do sistema \n\
+(classes, objetos, métodos etc.)\n\
+e suas relações;
+
+    :Definir especificações mais concretas\n\
+(mais próximas à estura real do código);
+
+    if (Requisitos estão bem definidos?) is (Sim) then
+        if (Elementos estão bem definidos?) is (Sim) then
+
+            (C)
+            
+            detach
+
+        else (Não)
+            (B)
+            
+            detach
+        endif
+    else (Não)
+        (A)
+    endif
+
+|Codificação|
+    (C)
+
+    :Transformar elementos do \n\
+sistema em código fonte;
+
+    stop
+@enduml

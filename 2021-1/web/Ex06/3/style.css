@@ -1,0 +1,44 @@
+#container {
+    margin: 10px 10px;
+    background-color: lightgray;
+    border: 1px solid black;
+    width: 200px;
+    padding: 10px;
+}
+
+#color-display {
+    height: 200px;
+    border: 1px solid black;
+}
+
+#color-id {
+    border: 1px solid black;
+    text-align: right;
+    padding-right: 5px;
+}
+
+#change-color-btn:hover {
+    cursor: pointer;
+}
+
+#change-color-btn {
+    background-color: orange;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2px 4px;
+    text-align: center;
+}
+
+.top {
+    display: flex;
+    padding-bottom: 15px;
+}
+
+.bottom {
+    padding-top: 15px;
+    display: flex;
+}
+
+.hspacer {
+    flex-grow: 1;
+}

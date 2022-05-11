@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Vue.js Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+
+
+    <style>
+        h1,
+        h2 {
+            font-family: 'Open Sans', sans-serif;
+            margin: 1rem 0;
+        }
+
+        body {
+            padding: 1em;
+        }
+
+        .list-group-item {
+            padding: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app-2" class="container-fluid">
+        <h1>Vue.js Search</h1>
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search term" v-model="searchTerm">
+        </div>
+
+        <div class="result-container">
+            <h2>Results<span></span></h2>
+            <ul class="list-group" v-for="result in resultList">
+                <li class="list-group-item" v-if="String(result).toLowerCase().includes(searchTerm.toLowerCase())">
+                    {{result}}
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+                resultList: [
+                    "Mulher Maravilha",
+                    "Brainiac",
+                    "Aquaman",
+                    "Ravena",
+                    "Batman",
+                    "Superman",
+                    "Mulher Gavião",
+                    "Flash",
+                    "Lanterna Verde",
+                    "Shazam"
+                ],
+                searchTerm: ''
+            }
+        })
+    </script>
+</body>
+
+</html>

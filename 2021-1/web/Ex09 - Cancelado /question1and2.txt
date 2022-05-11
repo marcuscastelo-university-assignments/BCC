@@ -1,0 +1,29 @@
+1. Those three system guarantees cannot be attended at the same time: Consistency, Availability and Partition tolerance. Only two of them can be satisfied at the same time. CouchDB does not implement Consistency.
+
+2. 
+
+2)
+
+- MongoDB:
+
+Modelo de documentos, utilizando uma sintaxe parecida com json.
+
+Possui balaceamento de carda, replicação e indexação.
+
+- Amazon DynamoDB:
+
+Modelo chave-valor
+
+- Cassandra:
+
+Modelo colunas
+
+- Redis:
+
+Armazenamento de estruturas chave-valor na memória.
+
+Sua proposta é ser usado como um banco temporário para atividades como: cache, gerenciamento de sessões, classificações, etc.
+
+- HBase
+
+Modelo colunas

@@ -3,11 +3,14 @@
 
 using namespace std;
 
+inline int test() 
+{
+	static int a = 1;
+	return a++;
+}
 
 int main(int argc, char const *argv[])
 {
-	/* code */
-	pair<int, int> p1 = make_pair(1, 2);
-	pair<int, int> p2 = make_pair(1, 3);
-	cout << (p1 == p2) << endl;
+	cout << test() << endl;
+	cout << test() << endl;
 }

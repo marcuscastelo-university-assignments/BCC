@@ -1,0 +1,230 @@
+
+
+/* Aula 22
+ body {
+    background-image: url(https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png);    
+    background-repeat: no-repeat;
+    background-size: 100vh 100vw;
+    background-attachment: fixed;
+} */
+
+
+/* Aula 21 #exemplo {
+    width: 200px;
+    height: 200px;
+    background-color: red; */
+    /* transition-property: width;
+    transition-duration: 2s;
+    transition-timing-function: linear;
+    transition-delay: 2s; */
+    /* transition: width 2s linear 1s, height 2s linear;
+
+} */
+/* #exemplo:hover {
+    width: 350px;
+    height: 350px;
+    background-color: blue;
+} */
+
+
+
+/* Aula 20 #exemplo {
+    /* border-style: solid;
+    border-width: 5px;
+    border-color: red; */
+    /*border: 5px solid red;
+} */
+
+/* Aula19
+#conteudo {
+    background-color: red;
+    width: 600px;
+    height: 1200px;
+    position: relative;
+}
+
+#texto {
+    width: 500px;
+    background-color: green;
+    position: fixed;
+    left: 0;
+    top: 0;
+} */
+
+/* Aula 18
+ #base {
+    background-color: green;
+    width: 600px;
+    height: 600px;
+}
+
+#esquerda, #direita {
+    background-color: red;
+    width: 300px;
+    height: 300px; 
+    float: left;
+}
+
+#direita {
+    background-color: blue;
+    float: right;
+} */
+
+/* Aulas 16 e 17 #cores {
+    width: 200px;
+    height: 200px;
+    /* background-color: hsla(20, 100%, 59%, 0.5); */
+    /* background: linear-gradient(to top left, , rgba(255,0,0,1),blue); */
+    /* background: radial-gradient(red, blue);
+} */
+
+/* Aulas 13 e 14 
+@font-face {
+    font-family: 'Manjari';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/manjari/v4/k3kQo8UPMOBO2w1UfdnoLg.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+p {
+    font-family: Manjari, Arial, Verdana, sans-serif;
+    font-weight: bold;
+    font-style: oblique;
+    font-size: 5em;
+}
+p {font-family: Times, 'Times New Roman', serif;} */
+
+/* Aula 12 #bloco {
+    background-color: green;
+    width: 300px;
+    height: 150px;
+    border-radius: 20px 50px 100px;
+} */
+
+/* Aula 11
+#conteudo {
+    background-color: red;
+    width: 300px;
+    height: 50px;
+    overflow: auto;
+    opacity: 50%;
+}
+
+#conteudo p {
+    opacity: 0.5;
+} */
+
+/* Aula 10
+* {
+    box-sizing: border-box;
+}
+
+#conteudo {
+    background-color: red;
+    width: 300px;
+    padding: 20px;
+    box-shadow: 10px 10px 5px green;
+} */
+
+/* Aula 08 e 09 p {
+    color: red;
+    text-transform: uppercase;
+    text-align: justify;
+    text-indent: 20px;
+    line-height: 25px;
+    direction: ltr;
+    letter-spacing: -1px;
+    word-spacing: -3px;
+
+}
+
+h1 { text-align: left; text-decoration: underline; text-shadow: 3px 3px 4px red; }
+h2 { text-align: right; text-decoration: overline;}
+h3 { text-align: center; text-decoration: line-through;} */
+
+/* Aula07 #exemplo {
+    background-color: green;
+    width: 500px;
+    color: #fff;
+    padding: 10px 20px 30px 30px;
+}
+
+#exemplo2 {
+    background-color: green;
+    width: 500px;
+    color: #fff;
+    margin: 20px 30px 20px 40px ;
+} */
+
+/* Aula06 #conteudo {
+    background-color: green;
+    padding: 20px;
+    color: #fff;
+    min-width: 500px;
+    min-height: 20px;
+    
+} */
+
+/* AULA 05 .texto-principal {
+    color: red;
+    text-align: center;
+}
+
+.fundo-principal {
+    background-color: green;
+    padding: 20px;
+}
+
+#conteudo {
+    background-color: blue;
+    padding: 20px;
+    color: green;
+} */
+
+/* Aula04 
+h1, h2, p {
+    color: red;
+    text-align: center; 
+}*/
+
+/*
+AULA 02 e 03
+* {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: blue;
+    font-size: 50px;
+}
+
+p {
+    color: green;
+}
+
+input[type="text"], input[type="text"] {
+    width: 200px;
+    background-color: #ccc;
+    height: 30px;
+    border-style: none;
+}
+
+input[type="text"] {
+    width: 50px;
+    background-color: green;
+    height: 35px;
+    border-style: none;
+    cursor: pointer;
+} */
+
+
+/* AULA 01
+h1 {
+    color: green;
+    font-size: 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+*/

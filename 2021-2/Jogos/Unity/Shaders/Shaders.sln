@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityEngine.UI", "UnityEngine.UI.csproj", "{082cbaed-6079-ba84-73c7-9a23e94fbba0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tayx.Graphy", "Tayx.Graphy.csproj", "{458d283f-bb8e-0b55-39af-06a648d6c49e}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityEditor.UI", "UnityEditor.UI.csproj", "{f0b18d2a-050d-1556-7603-249c61722e71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tayx.Graphy.Editor", "Tayx.Graphy.Editor.csproj", "{7d9c7fdb-8d6e-d9d1-e5ec-05b2c299a9db}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{082cbaed-6079-ba84-73c7-9a23e94fbba0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{082cbaed-6079-ba84-73c7-9a23e94fbba0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{458d283f-bb8e-0b55-39af-06a648d6c49e}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{458d283f-bb8e-0b55-39af-06a648d6c49e}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{f0b18d2a-050d-1556-7603-249c61722e71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{f0b18d2a-050d-1556-7603-249c61722e71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7d9c7fdb-8d6e-d9d1-e5ec-05b2c299a9db}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7d9c7fdb-8d6e-d9d1-e5ec-05b2c299a9db}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

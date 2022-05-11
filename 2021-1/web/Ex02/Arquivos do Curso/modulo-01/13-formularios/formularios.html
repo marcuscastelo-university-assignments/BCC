@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>Formulários</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <form action="cadastro.php" method="POST">
+        <fieldset>
+            <legend> Informações Pessoais </legend>
+            Nome: <br>
+            <input type="text" name="nome" required autofocus maxlength="50"><br>
+            Senha: <br>
+            <input type="password" name="senha" minlength="8"><br>
+            Email: <br>
+            <input type="email" name="email" autocomplete="on" placeholder="email@dominio.com" required> <br>
+
+            Imagem: <br><br>
+            <input type="file" name="imagem"><br><br>
+
+            <input type="hidden" name="id"><br><br>
+
+            URL: <br>
+            <input type="url" name="site"><br><br>
+
+            Search: <br>
+            <input type="search" name="pesquisa"><br><br>
+
+            Data: <br>
+            <input typ="date" name="data" min="2000-12-31" max="2021-05-09"><br><br> 
+            
+            Hora: <br>
+            <input type="time" name="hora"> <br><br>
+
+            Mes e ano: <br>
+            <input type="month" name="mes-ano"> <br><br>
+
+            Semana: <br>
+            <input type="week" name="semana"> <br><br>
+
+            Data e hora:
+            <input type="datetime-local" name="datae-hora"><br><br>
+            
+            Mensagem: <br>
+            <textarea name="mensagem" rows="5" cols="30" spellcheck="false"></textarea> <br><br>
+            <button type="button">Clique-me</button><br><br>
+
+            Escholha seu veículo: <br>
+            <select name="veiculo">
+                <optgroup label="Carros">
+                    <option value="camaro"> Camaro </option>
+                    <option value="hilux"> Hilux </option>
+                </optgroup>
+                <optgroup label="Motos">
+                    <option value="pop100"> pop100 </option>
+                    <option value="zig-50"> Zig-50 </option>
+                </optgroup>
+            </select>
+
+            Escolha um curso: <br>
+            <input name="cursos" list="lista-cursos">
+            
+            <datalist id="lista-cursos">
+                <option value="HTML5"></option>
+                <option value="CSS3"></option>
+                <option value="PHP"></option>
+            </datalist>
+
+
+            Time: <br>
+            <input type="radio" name="time" value="vasco"> Vasco <br>
+            <input type="radio" name="time" value="botafogo"> Botafogo <br>
+            <input type="radio" name="time" value="fluminense"> Fluminense <br>
+            <input type="radio" name="time" value="Flamengo"> Flamengo <br>
+            <br>
+            Cores:
+            <input type="checkbox" name="cor" value="verde"> Verde <br>
+            <input type="checkbox" name="cor" value="azul"> Azul <br>
+            <input type="checkbox" name="cor" value="preto"> Preto <br>
+
+            Quantidade: <br>
+            <input type="number" name="quantidade" min="0" max="500" step="10">
+            <input type="range" name="quantidade" >
+            <input type="submit" name="btn-enviar" value="Enviar">
+
+            Cor: <br>
+            <input type="color" name="cor-sel">
+
+        </fieldset>
+    </form>
+</body>
+
+</html>

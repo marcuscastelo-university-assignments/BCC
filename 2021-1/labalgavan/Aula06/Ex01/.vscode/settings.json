@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "bit": "cpp",
+        "*.tcc": "cpp",
+        "random": "cpp",
+        "valarray": "cpp",
+        "iostream": "cpp",
+        "algorithm": "cpp",
+        "fstream": "cpp",
+        "memory": "cpp",
+        "new": "cpp",
+        "numeric": "cpp",
+        "system_error": "cpp"
+    }
+}

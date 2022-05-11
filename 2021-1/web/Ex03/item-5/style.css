@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+:root {
+    --accent-color: #e05454;
+    --background-color: #f0ecec;
+}
+
+*, *::after, *::before, :root {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: 'Open Sans', sans-serif;
+    color: rgba(30%, 30%, 30%, 0.7);
+    font-weight: 100;
+}
+
+.card {
+    width: 44vw;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 30px;
+    background-color: white;
+    box-shadow: 0 0 5px 0rem rgba(0, 0, 0, 0.2); 
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#img-profile {
+    width: 10em;
+    border-radius: 50%;
+    box-shadow: 0 0 5px 0.5em rgba(0, 0, 0, 0.09); 
+}
+
+@media only screen and (max-width: 1200px) {
+    .card {
+        width: 80vw;
+    }
+}
+
+.container h1{
+    color:var(--accent-color);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.list-inline {
+    display: flex;
+    min-height: 40px;    
+    width: fit-content;
+    margin: 2.5em auto;
+}
+
+.list-inline li{
+    display: flex;
+    margin: 0 1em;
+}
+
+.fa {
+    font-size: 2.2rem;
+    color: rgba(30%, 30%, 30%, 0.5);
+}
+
+a {
+    text-decoration: none;
+    color: rgba(30%, 30%, 30%, 0.5);
+}
+
+.card h2 {
+    margin-bottom: 1rem;
+}
+
+#movies img {
+    width: 100px;
+    margin-right: 20px;
+}

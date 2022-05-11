@@ -1,0 +1,2 @@
+/home/marucs/Mesh/obj/Debug/UnityEngine.UI.csproj.AssemblyReference.cache
+/home/marucs/Mesh/obj/Debug/UnityEngine.UI.csproj.CoreCompileInputs.cache

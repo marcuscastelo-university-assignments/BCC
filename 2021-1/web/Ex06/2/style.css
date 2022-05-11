@@ -1,0 +1,51 @@
+#container {
+    margin: 10px 10px;
+    background-color: lightgray;
+    border: 1px solid black;
+    width: 275px;
+    padding: 15px;
+}
+
+#color-display {
+    height: 200px;
+    border: 1px solid black;
+}
+
+.threshold-inp {
+    border: 1px solid black;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.joe-btn:hover {
+    cursor: pointer;
+}
+
+.joe-btn {
+    background-color: orange;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2px 4px;
+    text-align: center;
+}
+
+.top {
+    display: flex;
+    padding-bottom: 15px;
+}
+
+.bottom {
+    display: flex;
+}
+
+.hspacer {
+    flex-grow: 1;
+}
+
+.joe-happiness-container {
+    font-weight: bold;
+}
+
+.joe-sad {
+    color: red;
+}

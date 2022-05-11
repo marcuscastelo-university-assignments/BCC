@@ -1,0 +1,1 @@
+Two-way binding is a Vue.js mechanic that allows a particular value to be modified by the front-end components and stored in JS or be modified by JS and be displayed to the component seamlessly. It is achieved through using "data" inside the Vue object in JS and then referencing the inner member of data inside a html tag (v-model).

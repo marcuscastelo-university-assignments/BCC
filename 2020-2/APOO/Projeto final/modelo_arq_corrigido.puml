@@ -1,0 +1,64 @@
+@startuml
+left to right direction
+skinparam nodesep 30
+skinparam ranksep 220
+
+package "Cliente" as client {
+    [Páginas WEB de acesso ao aplicativo (Front-end)] as front_pages
+}
+
+package "Servidor" as server {
+    database DB { 
+
+    }
+
+    [Serviço de gerenciamento de banco de dados] as db_service
+    [Serviço de autenticação e \nacesso à API da USP] as auth_service
+    component "Serviço de gerenciamento de usuários" as user_management_service {
+        [Gerenciamento de usuários, suas preferências e notificações] as user_manager
+    }
+    component "Serviço de gerenciamento de agendas e eventos" as calendar_events_service {
+        [Criação, modificação, deleção e busca de eventos e agendas] as event_manager
+        [Configurações da agenda] as calendar_prefs_manager
+        [Serviço de sincronização da agenda com a API] as calendar_sync_service
+    }
+    [Serviço de sincronização das disciplinas com a API] as disciplines_sync_service
+    [Serviço de Notificações] as notification_service
+}
+
+[USP_API] <<External API>> as usp_api
+
+
+auth_service .up.> usp_api : <<use>>
+calendar_sync_service ..> auth_service : <<use>>
+disciplines_sync_service ..> auth_service : <<use>>
+' calendar_sync_service .u.> usp_api
+user_management_service ..> db_service : <<use>>
+calendar_events_service ..> db_service : <<use>>
+notification_service ..> db_service : <<use>>
+
+db_service -right-> DB
+
+client -up-> server : <<use>>
+
+note left of front_pages {
+    Dentre as páginas planejadas, estão:
+    Página de busca de agendas
+    Página de login e cadastro
+    Página de configurações
+    Página da agenda
+    Página da agenda de outro usuário 
+    Página de visualização da disciplina
+    Página de login USP
+    Página de estatísticas da plataforma
+    Página de gerenciamento de usuários
+    Página de gerenciamento do banco de dados
+}
+
+@enduml
+
+
+'TODO: 
+'- Fazer parte do yuji
+
+

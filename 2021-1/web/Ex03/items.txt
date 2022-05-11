@@ -1,0 +1,3 @@
+2. Margin is outter spacing, while padding is inner spacing.
+3. { padding: <top> <right> <bottom> <left> }
+4. .btn, .green { /* styling */}
